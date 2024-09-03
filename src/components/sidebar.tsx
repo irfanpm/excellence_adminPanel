@@ -116,10 +116,10 @@ const ExampleSidebar: FC = function () {
                   Contact
                 </Sidebar.Item>
                 <Sidebar.Item
-                  href="/users/list"
+                  href="/admin/list"
                   icon={HiUsers}
                   className={
-                    "/users/reviews" === currentPage
+                    "/admin/reviews" === currentPage
                       ? "bg-gray-100 dark:bg-gray-700"
                       : ""
                   }

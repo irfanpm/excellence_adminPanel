@@ -8,7 +8,6 @@ import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import SignInPage from "./pages/authentication/sign-in";
 import SignUpPage from "./pages/authentication/sign-up";
-import UserListPage from "./pages/users/list";
 import Homepage from "./pages/homepage/page";
 import About from "./pages/aboutSection/about";
 import Service from "./pages/service/service";
@@ -40,7 +39,7 @@ root.render(
           <Route path="/admin/extra-about" element={<MoreAbout />} />
           <Route path="/authentication/sign-in" element={<SignInPage />} />
           <Route path="/authentication/sign-up" element={<SignUpPage />} />
-          <Route path="/users/list" element={<UserReviewPage />} />
+          <Route path="/admin/list" element={<UserReviewPage />} />
         </Routes>
       </BrowserRouter>
     </Flowbite>
