@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Button, DarkThemeToggle, Navbar } from "flowbite-react";
+import { Navbar } from "flowbite-react";
 
 const ExampleNavbar: FC = function () {
   return (
@@ -15,7 +15,7 @@ const ExampleNavbar: FC = function () {
           <div className="flex items-center gap-3">
            
     
-            <DarkThemeToggle />
+            {/* <DarkThemeToggle /> */}
           </div>
         </div>
       </div>
