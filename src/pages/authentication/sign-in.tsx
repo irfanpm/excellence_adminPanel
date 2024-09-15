@@ -1,19 +1,29 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthenticationContext"; // Import the useAuth hook
 import type { FC } from "react";
 
 const SignInPage: FC = function () {
+  const [email, setEmail] = useState<string>("dummy@company.com");
+  const [password, setPassword] = useState<string>("dummyPassword");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { signIn, isAuthenticated } = useAuth(); // Get signIn function and isAuthenticated state
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signIn(email, password); // Call the signIn function
+    if (isAuthenticated) {
+      navigate("/"); // Redirect to home page if authenticated
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center px-6 lg:h-screen lg:gap-y-12">
       <div className="my-6 flex items-center gap-x-1 lg:my-0">
-        <img
-          alt="Flowbite logo"
-          src="https://flowbite.com/docs/images/logo.svg"
-          className="mr-3 h-12"
-        />
-        <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
-          Flowbite
-        </span>
+      <img alt="image" src="/logo.jpg" className="mr-3 h-10 sm:h-10" />
+
       </div>
       <Card
         horizontal
@@ -24,7 +34,7 @@ const SignInPage: FC = function () {
         <h1 className="mb-3 text-2xl font-bold dark:text-white md:text-3xl">
           Sign in to platform
         </h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4 flex flex-col gap-y-3">
             <Label htmlFor="email">Your email</Label>
             <TextInput
@@ -32,6 +42,8 @@ const SignInPage: FC = function () {
               name="email"
               placeholder="name@company.com"
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6 flex flex-col gap-y-3">
@@ -41,31 +53,26 @@ const SignInPage: FC = function () {
               name="password"
               placeholder="••••••••"
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-x-3">
-              <Checkbox id="rememberMe" name="rememberMe" />
+              <Checkbox
+                id="rememberMe"
+                name="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
               <Label htmlFor="rememberMe">Remember me</Label>
             </div>
-            <a
-              href="#"
-              className="w-1/2 text-right text-sm text-primary-600 dark:text-primary-300"
-            >
-              Lost Password?
-            </a>
           </div>
           <div className="mb-6">
             <Button type="submit" className="w-full lg:w-auto">
               Login to your account
             </Button>
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-300">
-            Not registered?&nbsp;
-            <a href="#" className="text-primary-600 dark:text-primary-300">
-              Create account
-            </a>
-          </p>
         </form>
       </Card>
     </div>
