@@ -9,7 +9,7 @@ const Contact = () => {
     location: '',
     email: '',
     whatsappNumber: '',
-    phoneNumber: '',
+    phoneNumber: [''], // phoneNumber as an array
     facebookLink: '',
     instagramLink: '',
     address: ''
@@ -35,14 +35,45 @@ const Contact = () => {
     fetchContactDetails();
   }, []);
 
-  const handleChange = (e) => {
+  // Handle change for other fields and phone number array
+  const handleChange = (e, index = null) => {
     const { id, value } = e.target;
+
+    if (id === "phoneNumber" && index !== null) {
+      // Update specific phone number in the array
+      const updatedPhoneNumbers = [...contactDetails.phoneNumber];
+      updatedPhoneNumbers[index] = value;
+      setContactDetails((prevDetails) => ({
+        ...prevDetails,
+        phoneNumber: updatedPhoneNumbers
+      }));
+    } else {
+      // Update other fields
+      setContactDetails((prevDetails) => ({
+        ...prevDetails,
+        [id]: value
+      }));
+    }
+  };
+
+  // Function to add a new phone number input
+  const handleAddPhoneNumber = () => {
     setContactDetails((prevDetails) => ({
       ...prevDetails,
-      [id]: value
+      phoneNumber: [...prevDetails.phoneNumber, ''] // Add new empty phone number
     }));
   };
 
+  // Function to remove a phone number input
+  const handleRemovePhoneNumber = (index) => {
+    const updatedPhoneNumbers = contactDetails.phoneNumber.filter((_, i) => i !== index);
+    setContactDetails((prevDetails) => ({
+      ...prevDetails,
+      phoneNumber: updatedPhoneNumbers
+    }));
+  };
+
+  // Save the updated contact details to Firestore
   const handleSave = async () => {
     try {
       const docRef = doc(fireDB, "contactDetails", "contactInfo");
@@ -63,6 +94,7 @@ const Contact = () => {
         <div className="p-6 space-y-6">
           <form>
             <div className="grid grid-cols-6 gap-6">
+              {/* Google Maps Link */}
               <div className="col-span-full">
                 <label htmlFor="googleMapsLink" className="text-sm font-medium text-gray-900 block mb-2">
                   Google Maps Location Link
@@ -76,6 +108,8 @@ const Contact = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              {/* Location */}
               <div className="col-span-full">
                 <label htmlFor="location" className="text-sm font-medium text-gray-900 block mb-2">
                   Location
@@ -89,6 +123,8 @@ const Contact = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              {/* Email */}
               <div className="col-span-full">
                 <label htmlFor="email" className="text-sm font-medium text-gray-900 block mb-2">
                   Email
@@ -102,6 +138,8 @@ const Contact = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              {/* WhatsApp Number */}
               <div className="col-span-full">
                 <label htmlFor="whatsappNumber" className="text-sm font-medium text-gray-900 block mb-2">
                   WhatsApp Number
@@ -115,19 +153,43 @@ const Contact = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              {/* Phone Numbers */}
               <div className="col-span-full">
                 <label htmlFor="phoneNumber" className="text-sm font-medium text-gray-900 block mb-2">
-                  Phone Number
+                  Phone Numbers
                 </label>
-                <input
-                  type="tel"
-                  id="phoneNumber"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                  placeholder="Enter phone number"
-                  value={contactDetails.phoneNumber}
-                  onChange={handleChange}
-                />
+                {contactDetails?.phoneNumber?.map((number, index) => (
+                  <div key={index} className="flex items-center mb-2">
+                    <input
+                      type="tel"
+                      id="phoneNumber"
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                      placeholder="Enter phone number"
+                      value={number}
+                      onChange={(e) => handleChange(e, index)}
+                    />
+                    {contactDetails.phoneNumber.length > 1 && (
+                      <button
+                        type="button"
+                        className="ml-2 bg-red-500 text-white px-3 py-1 rounded"
+                        onClick={() => handleRemovePhoneNumber(index)}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  className="bg-green-500 text-white px-3 py-1 rounded"
+                  onClick={handleAddPhoneNumber}
+                >
+                  Add Phone Number
+                </button>
               </div>
+
+              {/* Facebook Link */}
               <div className="col-span-full">
                 <label htmlFor="facebookLink" className="text-sm font-medium text-gray-900 block mb-2">
                   Facebook Link
@@ -141,6 +203,8 @@ const Contact = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              {/* Instagram Link */}
               <div className="col-span-full">
                 <label htmlFor="instagramLink" className="text-sm font-medium text-gray-900 block mb-2">
                   Instagram Link
@@ -154,6 +218,8 @@ const Contact = () => {
                   onChange={handleChange}
                 />
               </div>
+
+              {/* Address */}
               <div className="col-span-full">
                 <label htmlFor="address" className="text-sm font-medium text-gray-900 block mb-2">
                   Address
@@ -168,6 +234,8 @@ const Contact = () => {
                 />
               </div>
             </div>
+            
+            {/* Save Button */}
             <div className="p-6 border-t border-gray-200 rounded-b flex justify-end">
               <button
                 type="button"
