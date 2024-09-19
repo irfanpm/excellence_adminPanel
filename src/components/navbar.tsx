@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Navbar } from "flowbite-react";
+import {  Navbar } from "flowbite-react";
 
 const ExampleNavbar: FC = function () {
   return (

@@ -19,12 +19,14 @@ const Gallery = () => {
   const [newImage, setNewImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(false); // Loading state
 
   useEffect(() => {
     fetchDatabaseImages();
   }, []);
 
   const fetchDatabaseImages = async () => {
+    setLoading(true);
     try {
       const querySnapshot = await getDocs(collection(fireDB, "gallery"));
       const imagesArray = [];
@@ -34,74 +36,67 @@ const Gallery = () => {
       setImages(imagesArray);
     } catch (error) {
       console.error("Error fetching images:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleImageUpload = async () => {
     if (!uploadImage) return;
+    setLoading(true);
   
-    // Define the full path in Firebase Storage
     const imageRef = ref(fireStorage, `images/${uploadImage.name}`);
-    
     try {
-      // Upload the image to Firebase Storage
       await uploadBytes(imageRef, uploadImage);
-  
-      // Get the download URL
       const imageUrl = await getDownloadURL(imageRef);
-  
-      // Store both the download URL and the storage path in Firestore
       await addDoc(collection(fireDB, "gallery"), {
         imageUrl,
-        storagePath: imageRef.fullPath, // Store the full storage path
+        storagePath: imageRef.fullPath,
         caption,
         group,
       });
   
-      // Reset the form
       setCaption("");
       setGroup("");
       setUploadimage(null);
       fetchDatabaseImages();
     } catch (error) {
       console.error("Error uploading image:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
   const handleImageDelete = async (imagePath, imageDocId) => {
+    if (!imagePath || imagePath === "/") {
+      console.error("Invalid image path");
+      return;
+    }
+    setLoading(true);
+
+    const imageRef = ref(fireStorage, imagePath);
     try {
-      // Ensure imagePath is not empty or the root of the storage
-      if (!imagePath || imagePath === "/") {
-        throw new Error("Invalid image path");
-      }
-  
-      // Step 1: Delete the image from Firebase Storage
-      const imageRef = ref(fireStorage, imagePath); // Create a non-root reference
       await deleteObject(imageRef);
-  
-      // Step 2: Delete the document from Firestore (if necessary)
       if (imageDocId) {
-        
-        const docRef = doc(fireDB, "gallery", imageDocId); // Replace with your collection name
+        const docRef = doc(fireDB, "gallery", imageDocId);
         await deleteDoc(docRef);
         fetchDatabaseImages();
-
       }
-  
       console.log("Image and document deleted successfully");
     } catch (error) {
       console.error("Error deleting image or document:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-
   const deleteImage = (imagePath, imageDocId) => {
-    
     handleImageDelete(imagePath, imageDocId);
   };
 
-
   const handleImageEdit = async () => {
     if (!editId) return;
+    setLoading(true);
 
     const imageData = { caption: newCaption, group: newGroup };
     if (newImage) {
@@ -121,6 +116,8 @@ const Gallery = () => {
       fetchDatabaseImages();
     } catch (error) {
       console.error("Error editing image:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,6 +127,7 @@ const Gallery = () => {
         <div className="bg-white border border-4 rounded-lg shadow relative m-10 p-6">
           <div className="flex flex-col items-center">
             <h3 className="text-2xl font-semibold mb-4">Gallery</h3>
+            {loading && <div className="loader">Loading...</div>}
             <form>
               <div className="mb-6">
                 <label htmlFor="caption" className="block text-sm font-medium text-gray-900 mb-2">
@@ -186,6 +184,7 @@ const Gallery = () => {
 
           <div className="mt-10">
             <h4 className="text-xl font-semibold mb-4">Uploaded Images</h4>
+            {loading && <div className="loader">Loading...</div>}
             <div className="flex flex-wrap">
               {images.map((image) => (
                 <a href="#" key={image.id} className="group relative flex h-96 w-1/2 items-end overflow-hidden rounded-lg bg-gray-100 p-4 shadow-lg">
@@ -207,7 +206,7 @@ const Gallery = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() =>deleteImage(image.storagePath,image.id)}
+                        onClick={() => deleteImage(image.storagePath, image.id)}
                         className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5"
                       >
                         Delete
@@ -249,8 +248,7 @@ const Gallery = () => {
               <label htmlFor="new-caption" className="block text-sm font-medium text-gray-900 mb-2">
                 New Caption
               </label>
-              <img src={editingImage} loading="lazy" alt="dfbdih" className="w-1/2" />
-
+              <img src={editingImage} loading="lazy" alt="Preview" className="w-1/2" />
               <input
                 type="text"
                 id="new-caption"
