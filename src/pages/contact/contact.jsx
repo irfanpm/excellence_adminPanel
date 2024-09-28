@@ -8,7 +8,7 @@ const Contact = () => {
     googleMapsLink: '',
     location: '',
     email: '',
-    whatsappNumber: '',
+    whatsappNumber: [''], // Changed to array
     phoneNumber: [''], // phoneNumber as an array
     facebookLink: '',
     instagramLink: '',
@@ -35,17 +35,17 @@ const Contact = () => {
     fetchContactDetails();
   }, []);
 
-  // Handle change for other fields and phone number array
-  const handleChange = (e, index = null) => {
+  // Handle change for other fields, phone number array, and WhatsApp number array
+  const handleChange = (e, index = null, field = 'phoneNumber') => {
     const { id, value } = e.target;
 
-    if (id === "phoneNumber" && index !== null) {
-      // Update specific phone number in the array
-      const updatedPhoneNumbers = [...contactDetails.phoneNumber];
-      updatedPhoneNumbers[index] = value;
+    if ((id === "phoneNumber" || id === "whatsappNumber") && index !== null) {
+      // Update specific number in the array (either phoneNumber or whatsappNumber)
+      const updatedNumbers = [...contactDetails[field]];
+      updatedNumbers[index] = value;
       setContactDetails((prevDetails) => ({
         ...prevDetails,
-        phoneNumber: updatedPhoneNumbers
+        [field]: updatedNumbers
       }));
     } else {
       // Update other fields
@@ -64,12 +64,29 @@ const Contact = () => {
     }));
   };
 
+  // Function to add a new WhatsApp number input
+  const handleAddWhatsAppNumber = () => {
+    setContactDetails((prevDetails) => ({
+      ...prevDetails,
+      whatsappNumber: [...prevDetails.whatsappNumber, ''] // Add new empty WhatsApp number
+    }));
+  };
+
   // Function to remove a phone number input
   const handleRemovePhoneNumber = (index) => {
     const updatedPhoneNumbers = contactDetails.phoneNumber.filter((_, i) => i !== index);
     setContactDetails((prevDetails) => ({
       ...prevDetails,
       phoneNumber: updatedPhoneNumbers
+    }));
+  };
+
+  // Function to remove a WhatsApp number input
+  const handleRemoveWhatsAppNumber = (index) => {
+    const updatedWhatsAppNumbers = contactDetails.whatsappNumber.filter((_, i) => i !== index);
+    setContactDetails((prevDetails) => ({
+      ...prevDetails,
+      whatsappNumber: updatedWhatsAppNumbers
     }));
   };
 
@@ -139,19 +156,39 @@ const Contact = () => {
                 />
               </div>
 
-              {/* WhatsApp Number */}
+              {/* WhatsApp Numbers */}
               <div className="col-span-full">
                 <label htmlFor="whatsappNumber" className="text-sm font-medium text-gray-900 block mb-2">
-                  WhatsApp Number
+                  WhatsApp Numbers
                 </label>
-                <input
-                  type="tel"
-                  id="whatsappNumber"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                  placeholder="Enter WhatsApp number"
-                  value={contactDetails.whatsappNumber}
-                  onChange={handleChange}
-                />
+                {contactDetails?.whatsappNumber?.map((number, index) => (
+                  <div key={index} className="flex items-center mb-2">
+                    <input
+                      type="tel"
+                      id="whatsappNumber"
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                      placeholder="Enter WhatsApp number"
+                      value={number}
+                      onChange={(e) => handleChange(e, index, 'whatsappNumber')}
+                    />
+                    {contactDetails.whatsappNumber.length > 1 && (
+                      <button
+                        type="button"
+                        className="ml-2 bg-red-500 text-white px-3 py-1 rounded"
+                        onClick={() => handleRemoveWhatsAppNumber(index)}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  className="bg-green-500 text-white px-3 py-1 rounded"
+                  onClick={handleAddWhatsAppNumber}
+                >
+                  Add WhatsApp Number
+                </button>
               </div>
 
               {/* Phone Numbers */}
@@ -167,7 +204,7 @@ const Contact = () => {
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                       placeholder="Enter phone number"
                       value={number}
-                      onChange={(e) => handleChange(e, index)}
+                      onChange={(e) => handleChange(e, index, 'phoneNumber')}
                     />
                     {contactDetails.phoneNumber.length > 1 && (
                       <button
@@ -234,7 +271,7 @@ const Contact = () => {
                 />
               </div>
             </div>
-            
+
             {/* Save Button */}
             <div className="p-6 border-t border-gray-200 rounded-b flex justify-end">
               <button

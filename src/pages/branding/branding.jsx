@@ -123,7 +123,7 @@ const Branding = () => {
             Add Branding
           </button>
         </div>
-        <div className="flex flex-wrap">
+        <div className="flex gap-4 items-center justify-center flex-wrap">
           {Brandings.map((Branding) => (
             <div key={Branding._id} className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center">
               <img 
