@@ -27,7 +27,7 @@ const root = createRoot(container);
 
 root.render(
   <StrictMode>
-    <Flowbite theme={{ theme }}>
+    {/* <Flowbite theme={{ theme }}> */}
       <BrowserRouter>
         <AuthProvider>
           <Routes>
@@ -48,6 +48,6 @@ root.render(
           </Routes>
         </AuthProvider>
       </BrowserRouter>
-    </Flowbite>
+    {/* </Flowbite> */}
   </StrictMode>
 );
