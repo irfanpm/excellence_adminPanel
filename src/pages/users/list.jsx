@@ -107,21 +107,21 @@ const ReviewTable = () => {
           </div>
         </Button>
       </div>
-      <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <Table.Head className="bg-gray-50 dark:bg-gray-700">
+      <Table className="min-w-full divide-y divide-gray-200 ">
+        <Table.Head className="bg-gray-50 ">
           <Table.HeadCell>User</Table.HeadCell>
           <Table.HeadCell>Review</Table.HeadCell>
           <Table.HeadCell>Rating</Table.HeadCell>
           <Table.HeadCell>Position</Table.HeadCell>
           <Table.HeadCell>Actions</Table.HeadCell>
         </Table.Head>
-        <Table.Body className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+        <Table.Body className="bg-white divide-y divide-gray-200 ">
           {reviews.map(review => (
-            <Table.Row key={review.id} className="bg-white dark:bg-gray-800">
-              <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm text-gray-900 dark:text-white">{review.name}</Table.Cell>
-              <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm text-gray-900 dark:text-white">{review.review}</Table.Cell>
+            <Table.Row key={review.id} className="bg-white ">
+              <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm text-gray-900 ">{review.name}</Table.Cell>
+              <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm text-gray-900 ">{review.review}</Table.Cell>
               <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm text-yellow-500">{review.rating}/5</Table.Cell>
-              <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm text-gray-900 dark:text-white">{review.position}</Table.Cell>
+              <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm text-gray-900 ">{review.position}</Table.Cell>
               <Table.Cell className="whitespace-nowrap px-4 py-2 text-sm font-medium">
                 <div className="flex items-center gap-x-3">
                   <Button color="primary" onClick={() => handleEditReview(review)}>
@@ -179,7 +179,7 @@ const EditReviewModal = ({ review, onSave, onClose }) => {
       onClose={onClose}
       size="md"
     >
-      <Modal.Header className="border-b border-gray-200 !p-6 dark:border-gray-700">
+      <Modal.Header className="border-b border-gray-200 !p-6 ">
         <strong>Edit Review</strong>
       </Modal.Header>
       <Modal.Body>
@@ -276,7 +276,7 @@ const AddReviewModal = ({ onAdd, onClose }) => {
       onClose={onClose}
       size="md"
     >
-      <Modal.Header className="border-b border-gray-200 !p-6 dark:border-gray-700">
+      <Modal.Header className="border-b border-gray-200 !p-6 ">
         <strong>Add New Review</strong>
       </Modal.Header>
       <Modal.Body>

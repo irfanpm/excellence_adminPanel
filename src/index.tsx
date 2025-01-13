@@ -4,7 +4,7 @@ import { Flowbite } from "flowbite-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./pages/authentication/AuthenticationContext"; // Import the AuthProvider
 import "./index.css";
-import theme from "./flowbite-theme";
+import theme from "./flowbite-theme"; // Your updated theme with light mode
 import SignInPage from "./pages/authentication/sign-in";
 import Homepage from "./pages/homepage/page";
 import About from "./pages/aboutSection/about";
@@ -16,6 +16,7 @@ import Contact from "./pages/contact/contact";
 import MoreAbout from "./pages/extraAboutSection/extraAboutSection";
 import PrivateRoute from "./pages/authentication/PrivateRoute"; // Import the PrivateRoute component
 import WelcomePage from "./pages/Welcome/WelcomePage";
+
 const container = document.getElementById("root");
 
 if (!container) {
@@ -30,8 +31,8 @@ root.render(
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-          <Route path="/" element={<WelcomePage />} index />
-          <Route path="/authentication/sign-in" element={<SignInPage />} />
+            <Route path="/" element={<WelcomePage />} index />
+            <Route path="/authentication/sign-in" element={<SignInPage />} />
             
             {/* Protected Routes */}
             <Route element={<PrivateRoute />}>

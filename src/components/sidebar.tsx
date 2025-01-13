@@ -30,7 +30,7 @@ const ExampleSidebar: FC = function () {
       {/* Sidebar */}
       <Sidebar
         aria-label="Sidebar with multi-level dropdown example"
-        className={`fixed top-0 left-0 h-full bg-white dark:bg-gray-800 z-10 transition-transform transform ${
+        className={`fixed top-0 left-0 h-full bg-white  z-10 transition-transform transform ${
           isSidebarVisible ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`} // Ensure sidebar is hidden on mobile and visible on larger screens
       >
@@ -43,7 +43,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/homepage" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100"
                       : ""
                   }
                 >
@@ -54,7 +54,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/about" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100"
                       : ""
                   }
                 >
@@ -65,7 +65,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/service" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100"
                       : ""
                   }
                 >
@@ -76,7 +76,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/branding" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100"
                       : ""
                   }
                 >
@@ -87,7 +87,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/extra-about" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100"
                       : ""
                   }
                 >
@@ -98,7 +98,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/gallery" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100 "
                       : ""
                   }
                 >
@@ -109,7 +109,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/contact" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100" 
                       : ""
                   }
                 >
@@ -120,7 +120,7 @@ const ExampleSidebar: FC = function () {
                   icon={HiUsers}
                   className={
                     "/admin/reviews" === currentPage
-                      ? "bg-gray-100 dark:bg-gray-700"
+                      ? "bg-gray-100 "
                       : ""
                   }
                 >
