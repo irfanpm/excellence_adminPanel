@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { HiLogin, HiPencil, HiSearch, HiUsers } from "react-icons/hi";
 import { HiMenu } from "react-icons/hi"; // Import the menu icon
-
+import Logout from "../pages/authentication/Logout";
 const ExampleSidebar: FC = function () {
   const [currentPage, setCurrentPage] = useState("");
   const [isSidebarVisible, setIsSidebarVisible] = useState(true); // State to toggle sidebar visibility
@@ -129,9 +129,10 @@ const ExampleSidebar: FC = function () {
                 <Sidebar.Item href="/authentication/sign-in" icon={HiLogin}>
                   Sign in
                 </Sidebar.Item>
-                <Sidebar.Item href="/authentication/sign-up" icon={HiPencil}>
-                  Sign up
+                <Sidebar.Item >
+                  <Logout/>
                 </Sidebar.Item>
+
               </Sidebar.ItemGroup>
             </Sidebar.Items>
           </div>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -11,16 +11,25 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+  useEffect(() => {
+    // Check localStorage for authentication status
+    const authToken = localStorage.getItem('authToken');
+    setIsAuthenticated(!!authToken);
+  }, []);
+
   const signIn = (email: string, password: string) => {
-    // For demonstration, we're just checking against dummy credentials
-    if (email === 'dummy@company.com' && password === 'dummyPassword') {
+    if (email === 'excellence@admin.com' && password === 'excellence@admin') {
+      localStorage.setItem('authToken', 'your-auth-token'); // Store a token
       setIsAuthenticated(true);
     } else {
       alert('Invalid credentials');
     }
   };
 
-  const signOut = () => setIsAuthenticated(false);
+  const signOut = () => {
+    localStorage.removeItem('authToken'); // Clear the token
+    setIsAuthenticated(false);
+  };
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>

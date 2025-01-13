@@ -6,7 +6,6 @@ import { AuthProvider } from "./pages/authentication/AuthenticationContext"; // 
 import "./index.css";
 import theme from "./flowbite-theme";
 import SignInPage from "./pages/authentication/sign-in";
-import SignUpPage from "./pages/authentication/sign-up";
 import Homepage from "./pages/homepage/page";
 import About from "./pages/aboutSection/about";
 import Service from "./pages/service/service";
@@ -15,7 +14,8 @@ import Gallery from "./pages/gallery/gallery";
 import Branding from "./pages/branding/branding";
 import Contact from "./pages/contact/contact";
 import MoreAbout from "./pages/extraAboutSection/extraAboutSection";
-
+import PrivateRoute from "./pages/authentication/PrivateRoute"; // Import the PrivateRoute component
+import WelcomePage from "./pages/Welcome/WelcomePage";
 const container = document.getElementById("root");
 
 if (!container) {
@@ -30,17 +30,20 @@ root.render(
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Homepage />} index />
-            <Route path="/admin/homepage" element={<Homepage />} />
-            <Route path="/admin/about" element={<About />} />
-            <Route path="/admin/service" element={<Service />} />
-            <Route path="/admin/gallery" element={<Gallery />} />
-            <Route path="/admin/contact" element={<Contact />} />
-            <Route path="/admin/branding" element={<Branding />} />
-            <Route path="/admin/extra-about" element={<MoreAbout />} />
-            <Route path="/authentication/sign-in" element={<SignInPage />} />
-            <Route path="/authentication/sign-up" element={<SignUpPage />} />
-            <Route path="/admin/list" element={<UserReviewPage />} />
+          <Route path="/" element={<WelcomePage />} index />
+          <Route path="/authentication/sign-in" element={<SignInPage />} />
+            
+            {/* Protected Routes */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/admin/homepage" element={<Homepage />} />
+              <Route path="/admin/about" element={<About />} />
+              <Route path="/admin/service" element={<Service />} />
+              <Route path="/admin/gallery" element={<Gallery />} />
+              <Route path="/admin/contact" element={<Contact />} />
+              <Route path="/admin/branding" element={<Branding />} />
+              <Route path="/admin/extra-about" element={<MoreAbout />} />
+              <Route path="/admin/list" element={<UserReviewPage />} />
+            </Route>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
